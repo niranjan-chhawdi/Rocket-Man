@@ -7,6 +7,17 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
+
+    public void goToLevel2()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    public void goToLevel3()
+    {
+        SceneManager.LoadScene(3);
+    }
+
     public void goBack()
     {
         SceneManager.LoadScene(0);
