@@ -16,16 +16,14 @@ public class TabController : MonoBehaviour
     {
         for (int i = 0; i < pages.Length; i++)
         {
-            if (i == index)
-            {
-                tabImages[i].color = Color.white;
-                pages[i].SetActive(true);
-            }
-            else
-            {
-                tabImages[i].color = Color.gray;
-                pages[i].SetActive(false);
-            }
+           
+            pages[i].SetActive(false);
+            tabImages[i].color = Color.gray;
+            
         }
+         pages[index].SetActive(true);
+        tabImages[index].color = Color.white;   
+            
+    
     }
 }
