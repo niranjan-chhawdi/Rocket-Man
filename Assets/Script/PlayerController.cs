@@ -2,22 +2,52 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public float walkSpeed = 5f;
+    public float runSpeed = 9f;
+    public float maxRunTime = 2f;
+    public float runRechargeSpeed = 1f;
 
-    public float speed = 10f; // Player movement speed
-    private Rigidbody2D rb; // Reference to the player's Rigidbody2D component
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Rigidbody2D rb;
+    private Animator animator;
+    private Vector2 movement;
+    private float runTimeLeft;
+
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component attached to this GameObject
-        
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        runTimeLeft = maxRunTime;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal"); // Get horizontal input
-        float moveVertical = Input.GetAxis("Vertical"); // Get vertical input
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
 
-        rb.linearVelocity = new Vector2(moveHorizontal * speed, moveVertical * speed); // Set the player's velocity based on input and speed
+        bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        bool isRunning = shiftHeld && runTimeLeft > 0f && movement.sqrMagnitude > 0f;
+
+        float currentSpeed = isRunning ? runSpeed : walkSpeed;
+
+        animator.SetFloat("Speed", movement.magnitude * currentSpeed);
+
+        if (isRunning)
+            runTimeLeft -= Time.deltaTime;
+        else
+            runTimeLeft = Mathf.Min(runTimeLeft + runRechargeSpeed * Time.deltaTime, maxRunTime);
+
+        if (movement.x > 0)
+            transform.localScale = new Vector3(1, 1, 1);
+        else if (movement.x < 0)
+            transform.localScale = new Vector3(-1, 1, 1);
+    }
+
+    void FixedUpdate()
+    {
+        bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        bool isRunning = shiftHeld && runTimeLeft > 0f && movement.sqrMagnitude > 0f;
+
+        float currentSpeed = isRunning ? runSpeed : walkSpeed;
+        rb.linearVelocity = movement.normalized * currentSpeed;
     }
 }
