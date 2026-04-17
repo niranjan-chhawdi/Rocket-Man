@@ -34,10 +34,10 @@ public class MapTransition : MonoBehaviour
         switch (direction)
         {
             case Direction.Up:
-                newPos.y += 2;
+                newPos.y += 4;
                 break;
             case Direction.Down:
-                newPos.y -= 2;
+                newPos.y -= 4;
                 break;
             case Direction.Left:
                 newPos.x -= 2;
