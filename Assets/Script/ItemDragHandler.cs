@@ -5,6 +5,10 @@ public class ItemDragHandler : MonoBehaviour , IBeginDragHandler, IDragHandler, 
 {
     Transform originalParent;
     CanvasGroup canvasGroup;
+
+    public float minDropDistance = 2f;
+    public float maxDropDistance = 3f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,6 +33,7 @@ public class ItemDragHandler : MonoBehaviour , IBeginDragHandler, IDragHandler, 
 
     public void OnEndDrag(PointerEventData eventData)
     {
+
         canvasGroup.blocksRaycasts = true;
         canvasGroup.alpha = 1f;
 
@@ -58,8 +63,46 @@ public class ItemDragHandler : MonoBehaviour , IBeginDragHandler, IDragHandler, 
         }    
         else
         {
-            transform.SetParent(originalParent);
+            if (!IsWithinInventory(eventData.position))
+            {
+                DropItem(originalSlot);
+            }
+            else
+            {
+                transform.SetParent(originalParent);    
+            }
+            
         }
         GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
     }
+
+    bool IsWithinInventory(Vector2 mousePosition)
+    {
+        RectTransform inventoryRect = originalParent.parent.GetComponent<RectTransform>();
+        return RectTransformUtility.RectangleContainsScreenPoint(inventoryRect, mousePosition);
+    }
+
+    void DropItem(Slot originalSlot)
+{
+    originalSlot.currentItem = null;
+
+    //Find player
+    Transform playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
+    if (playerTransform == null)
+    {
+        Debug.LogError("Missing 'Player' tag");
+        return;
+    }
+
+    //Random drop position
+    Vector2 dropOffset = Random.insideUnitCircle.normalized * Random.Range(minDropDistance, maxDropDistance);
+    Vector2 dropPosition = (Vector2)playerTransform.position + dropOffset;
+
+    //Instantiate drop item
+    Instantiate(gameObject, dropPosition, Quaternion.identity);
+
+    //Destroy the UI one
+    Destroy(gameObject);
+}
+
 }

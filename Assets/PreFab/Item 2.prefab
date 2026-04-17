@@ -11,11 +11,11 @@ PrefabInstance:
     - target: {fileID: -6610292308322218099, guid: 7550c0ff5f131bf4fb40f8a9bda5ba5c, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -1135474883, guid: d7ff5df89669a26488eadf93560481a4, type: 3}
+      objectReference: {fileID: -9158349384845336690, guid: ef0b8053a10679149bbc16a7fe62e3fc, type: 3}
     - target: {fileID: 2962180406214795377, guid: 7550c0ff5f131bf4fb40f8a9bda5ba5c, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -1135474883, guid: d7ff5df89669a26488eadf93560481a4, type: 3}
+      objectReference: {fileID: -9158349384845336690, guid: ef0b8053a10679149bbc16a7fe62e3fc, type: 3}
     - target: {fileID: 3231721926592233335, guid: 7550c0ff5f131bf4fb40f8a9bda5ba5c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
