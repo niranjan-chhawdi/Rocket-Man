@@ -10,7 +10,9 @@ public class SaveController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        saveLocation = Path.Combine(Application.persistentDataPath, "saveData.json");
+       string saveFolder = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Saves");
+        Directory.CreateDirectory(saveFolder);
+        saveLocation = Path.Combine(saveFolder, "saveData.json");
         inventoryController = FindObjectOfType<InventoryController>();
         hotbarController = FindObjectOfType<HotbarController>();
         LoadGame();
@@ -48,6 +50,8 @@ public class SaveController : MonoBehaviour
         }
         else
         {
+            inventoryController.SetInventoryItem(new System.Collections.Generic.List<InventorySaveData>());
+            hotbarController.SetHotbarItem(new System.Collections.Generic.List<InventorySaveData>());
             SaveGame();
         }
     }

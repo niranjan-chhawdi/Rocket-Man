@@ -69,33 +69,29 @@ public class HotbarController : MonoBehaviour
     public void SetHotbarItem(List<InventorySaveData> inventorySaveData)
     {
         foreach (Transform child in hotbarPanel.transform)
-        {
-            Destroy(child.gameObject);
-        }
+    {
+        Destroy(child.gameObject);
+    }
 
-        for (int i = 0; i < slotCount; i++)
-        {
-            Instantiate(slotPrefab, hotbarPanel.transform);
-        }
+    for (int i = 0; i < slotCount; i++)
+    {
+        Instantiate(slotPrefab, hotbarPanel.transform);
+    }
 
-        foreach (InventorySaveData data in inventorySaveData)
+    foreach (InventorySaveData data in inventorySaveData)
+    {
+        if (data.slotIndex < slotCount)
         {
-            if (data.slotIndex < slotCount)
+            Slot slot = hotbarPanel.transform.GetChild(data.slotIndex).GetComponent<Slot>();
+            GameObject itemPrefab = itemDictionary.GetItemPrefab(data.itemIDs);
+
+            if (itemPrefab != null)
             {
-                Slot slot = hotbarPanel.transform.GetChild(data.slotIndex).GetComponent<Slot>();
-                GameObject itemPrefab = itemDictionary.GetItemPrefab(data.itemIDs);
-
-                if (itemPrefab != null)
-                {
-                    GameObject item = Instantiate(itemPrefab, slot.transform);
-                    item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                    slot.currentItem = item;
-                }
-                else
-                {
-                    Debug.LogWarning("Item prefab for ID " + data.itemIDs + " not found. Skipping.");
-                }
+                GameObject item = Instantiate(itemPrefab, slot.transform);
+                item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                slot.currentItem = item;
             }
         }
+    }
     }
 }
